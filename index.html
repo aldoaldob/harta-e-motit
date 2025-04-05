@@ -1,26 +1,31 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="sq">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Harta e Motit Albania</title>
+  <title>Harta e Motit</title>
   <link rel="stylesheet" href="style.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
 </head>
 <body>
-  <div class="container">
-    <h1>🌤️ Harta e Motit (3 Ditët në Vijim)</h1>
-    <div class="buttons">
-      <button onclick="changeDay(0)">Sot</button>
-      <button onclick="changeDay(8)">Nesër</button>
-      <button onclick="changeDay(16)">Pasnesër</button>
+  <h1>🌤️ Harta e Motit <span>(3 Ditët në Vijim)</span></h1>
+  <div class="buttons">
+    <button onclick="changeDay(0)">Sot</button>
+    <button onclick="changeDay(1)">Nesër</button>
+    <button onclick="changeDay(2)">Pasnesër</button>
+  </div>
+  <div id="map"></div>
+
+  <!-- Modal për detajet -->
+  <div id="weatherModal" class="modal hidden">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h2 id="modalCityName"></h2>
+      <div id="modalDetails"></div>
     </div>
-    
-    <div id="map"></div>
   </div>
 
-  <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
   <script src="script.js"></script>
 </body>
 </html>

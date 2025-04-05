@@ -6,49 +6,80 @@ const cities = [
 ];
 
 const apiKey = '00ae0431e834e8a6d4df723da2bca6e9';
+let selectedDayIndex = 0;
 
 const map = L.map('map').setView([41.3275, 19.8189], 7);
-
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
   attribution: '© OpenStreetMap contributors'
 }).addTo(map);
 
-function getWeatherIcon(description) {
-  const desc = description.toLowerCase();
-  if (desc.includes("clear")) return "☀️";
-  if (desc.includes("cloud")) return "☁️";
-  if (desc.includes("rain")) return "🌧️";
-  if (desc.includes("storm") || desc.includes("thunder")) return "⛈️";
-  if (desc.includes("snow")) return "❄️";
-  if (desc.includes("fog") || desc.includes("mist")) return "🌫️";
-  if (desc.includes("drizzle")) return "🌦️";
-  return "🌈";
+function changeDay(index) {
+  selectedDayIndex = index;
+  loadWeatherData();
 }
 
-cities.forEach(city => {
-  fetch(`https://api.openweathermap.org/data/2.5/forecast?lat=${city.lat}&lon=${city.lon}&appid=${apiKey}&units=metric`)
-    .then(res => res.json())
-    .then(data => {
-      const day1 = data.list[0];
-      const day2 = data.list[8];
-      const day3 = data.list[16];
+function showDetails(cityName, forecastList) {
+  const modal = document.getElementById("weatherModal");
+  const cityTitle = document.getElementById("modalCityName");
+  const modalDetails = document.getElementById("modalDetails");
 
-      const icon1 = getWeatherIcon(day1.weather[0].description);
-      const icon2 = getWeatherIcon(day2.weather[0].description);
-      const icon3 = getWeatherIcon(day3.weather[0].description);
+  cityTitle.innerText = `Detajet për ${cityName}`;
+  modalDetails.innerHTML = "";
 
-      const popupContent = `
-        <strong>${city.name}</strong><br/>
-        Sot: ${icon1} ${day1.main.temp}°C, ${day1.weather[0].description}<br/>
-        Nesër: ${icon2} ${day2.main.temp}°C, ${day2.weather[0].description}<br/>
-        Pasnesër: ${icon3} ${day3.main.temp}°C, ${day3.weather[0].description}
-      `;
+  forecastList.forEach(item => {
+    const hour = new Date(item.dt_txt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    modalDetails.innerHTML += `
+      <div style="margin-bottom: 10px;">
+        <strong>${hour}</strong> - 🌡️ ${item.main.temp}°C - ${item.weather[0].description}
+        <img src="https://openweathermap.org/img/wn/${item.weather[0].icon}.png" />
+      </div>
+    `;
+  });
 
-      L.marker([city.lat, city.lon])
-        .addTo(map)
-        .bindPopup(popupContent);
-    });
-});
+  modal.classList.remove("hidden");
+}
+
+document.querySelector(".close").onclick = () => {
+  document.getElementById("weatherModal").classList.add("hidden");
+};
+
+function loadWeatherData() {
+  map.eachLayer(layer => {
+    if (layer instanceof L.Marker) {
+      map.removeLayer(layer);
+    }
+  });
+
+  cities.forEach(city => {
+    fetch(`https://api.openweathermap.org/data/2.5/forecast?lat=${city.lat}&lon=${city.lon}&appid=${apiKey}&units=metric`)
+      .then(res => res.json())
+      .then(data => {
+        const forecastList = data.list;
+        const dayIndex = selectedDayIndex * 8; // çdo 8 pika është 1 ditë
+        const current = forecastList[dayIndex];
+
+        const icon = current.weather[0].icon;
+        const iconUrl = `https://openweathermap.org/img/wn/${icon}.png`;
+
+        const popupContent = `
+          <strong>${city.name}</strong><br/>
+          <img src="${iconUrl}" alt="weather icon"><br/>
+          🌡️ ${current.main.temp}°C, ${current.weather[0].description}<br/>
+          <button onclick='showDetails("${city.name}", ${JSON.stringify(forecastList.slice(dayIndex, dayIndex + 8))})'>
+            Shfaq detajet
+          </button>
+        `;
+
+        L.marker([city.lat, city.lon])
+          .addTo(map)
+          .bindPopup(popupContent);
+      });
+  });
+}
+
+// Fillimisht ngarko dita e parë
+loadWeatherData();
+
 
 
   
