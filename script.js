@@ -2,7 +2,11 @@ const cities = [
   { name: "Tirana", lat: 41.3275, lon: 19.8189 },
   { name: "Prishtina", lat: 42.6629, lon: 21.1655 },
   { name: "Shkodra", lat: 42.0683, lon: 19.5126 },
-  { name: "Durrës", lat: 41.3231, lon: 19.4414 }
+  { name: "Durrës", lat: 41.3231, lon: 19.4414 },
+  { name: "Gjirokastër", lat: 40.0758, lon: 20.1389 },
+  { name: "Elbasan", lat: 41.1125, lon: 20.0821 },
+  { name: "Vlorë", lat: 40.4667, lon: 19.4897 },
+  { name: "Berat", lat: 40.7058, lon: 19.9522 }
 ];
 
 const apiKey = '00ae0431e834e8a6d4df723da2bca6e9';
@@ -55,7 +59,7 @@ function loadWeatherData() {
       .then(res => res.json())
       .then(data => {
         const forecastList = data.list;
-        const dayIndex = selectedDayIndex * 8; // çdo 8 pika është 1 ditë
+        const dayIndex = selectedDayIndex * 8;
         const current = forecastList[dayIndex];
 
         const icon = current.weather[0].icon;
@@ -77,8 +81,8 @@ function loadWeatherData() {
   });
 }
 
-// Fillimisht ngarko dita e parë
 loadWeatherData();
+
 
 
 
