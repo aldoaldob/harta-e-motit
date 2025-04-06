@@ -9,7 +9,7 @@ const cities = [
   { name: "Gjirokastër", lat: 40.0758, lon: 20.1381 }
 ];
 
-const apiKey = '00ae0431e834e8a6d4df723da2bca6e9';
+// Përdor tokenin nga token.js
 let selectedDayIndex = 0;
 
 const map = L.map('map').setView([41.3275, 19.8189], 7);
@@ -17,7 +17,6 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
   attribution: '© OpenStreetMap contributors'
 }).addTo(map);
 
-// Shfaq harten ne menyre korrekte pasi ngarkohet
 setTimeout(() => {
   map.invalidateSize();
 }, 500);
@@ -60,7 +59,7 @@ function loadWeatherData() {
   });
 
   cities.forEach(city => {
-    fetch(`https://api.openweathermap.org/data/2.5/forecast?lat=${city.lat}&lon=${city.lon}&appid=${apiKey}&units=metric`)
+    fetch(`https://api.openweathermap.org/data/2.5/forecast?lat=${city.lat}&lon=${city.lon}&appid=${OPENWEATHERMAP_API_KEY}&units=metric`)
       .then(res => res.json())
       .then(data => {
         const forecastList = data.list;
@@ -88,12 +87,12 @@ function loadWeatherData() {
 
 loadWeatherData();
 window.showDetails = showDetails;
-
 window.addEventListener('load', () => {
   setTimeout(() => {
     map.invalidateSize();
   }, 500);
 });
+
 
 
 
