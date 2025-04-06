@@ -17,6 +17,11 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
   attribution: '© OpenStreetMap contributors'
 }).addTo(map);
 
+// Ndihmon në rregullimin e shfaqjes së hartës kur ngarkohet
+setTimeout(() => {
+  map.invalidateSize();
+}, 500);
+
 function changeDay(index) {
   selectedDayIndex = index;
   loadWeatherData();
@@ -125,9 +130,10 @@ function loadWeatherData() {
 // Inicializimi
 loadWeatherData();
 
-// FUNKSIONET QË DUHEN TË JENË GLOBALE për popup
+// Funksionet që duhen të jenë globale
 window.showDetails = showDetails;
 window.showSevenDayForecast = showSevenDayForecast;
+
 
 
 
