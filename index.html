@@ -2,21 +2,28 @@
 <html lang="sq">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Harta e Motit</title>
+
+  <!-- AdSense Verification Code -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4377592030699008"
+     crossorigin="anonymous"></script>
+
   <link rel="stylesheet" href="style.css" />
-  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
 </head>
 <body>
-  <h1>🌤️ Harta e Motit <span>(3 Ditët në Vijim)</span></h1>
-  <div class="buttons">
-    <button onclick="changeDay(0)">Sot</button>
-    <button onclick="changeDay(1)">Nesër</button>
-    <button onclick="changeDay(2)">Pasnesër</button>
+  <div class="header">
+    <h1>🌤️ Harta e Motit <span>(3 Ditët në Vijim)</span></h1>
+    <div class="buttons">
+      <button onclick="changeDay(0)">Sot</button>
+      <button onclick="changeDay(1)">Nesër</button>
+      <button onclick="changeDay(2)">Pasnesër</button>
+    </div>
   </div>
-  <div id="map"></div>
 
-  <!-- Modal për detajet -->
+  <div id="map" style="height: 600px; margin: auto; width: 90%; border-radius: 15px;"></div>
+
+  <!-- Modal për oraret -->
   <div id="weatherModal" class="modal hidden">
     <div class="modal-content">
       <span class="close">&times;</span>
@@ -25,8 +32,18 @@
     </div>
   </div>
 
+  <!-- Modal për 7 ditë -->
+  <div id="weeklyModal" class="modal hidden">
+    <div class="modal-content">
+      <span class="close-weekly">&times;</span>
+      <h2 id="weeklyCityName"></h2>
+      <div id="weeklyDetails"></div>
+    </div>
+  </div>
+
   <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
   <script src="script.js"></script>
 </body>
 </html>
+
 
