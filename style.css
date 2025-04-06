@@ -25,12 +25,6 @@ h1 span {
   border-radius: 15px;
   overflow: hidden;
   box-shadow: 0 0 20px rgba(0,0,0,0.4);
-  z-index: 0;
-}
-
-.leaflet-container {
-  width: 100% !important;
-  height: 100% !important;
 }
 
 .buttons {
@@ -86,6 +80,13 @@ button:hover {
 .hidden {
   display: none;
 }
+
+.leaflet-container {
+  width: 100% !important;
+  height: 100% !important;
+  z-index: 0;
+}
+
 
 
 

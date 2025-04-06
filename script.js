@@ -17,6 +17,7 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
   attribution: '© OpenStreetMap contributors'
 }).addTo(map);
 
+// Shfaq harten ne menyre korrekte pasi ngarkohet
 setTimeout(() => {
   map.invalidateSize();
 }, 500);
@@ -45,43 +46,6 @@ function showDetails(cityName, forecastList) {
   });
 
   modal.classList.remove("hidden");
-}
-
-function showSevenDayForecast(cityName, lat, lon) {
-  fetch(`https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric`)
-    .then(res => res.json())
-    .then(data => {
-      const modal = document.getElementById("weatherModal");
-      const cityTitle = document.getElementById("modalCityName");
-      const modalDetails = document.getElementById("modalDetails");
-
-      cityTitle.innerText = `7 Ditët në Vijim për ${cityName}`;
-      modalDetails.innerHTML = "";
-
-      const forecastByDay = {};
-
-      data.list.forEach(item => {
-        const date = item.dt_txt.split(" ")[0];
-        if (!forecastByDay[date]) forecastByDay[date] = [];
-        forecastByDay[date].push(item);
-      });
-
-      Object.keys(forecastByDay).slice(0, 7).forEach(date => {
-        const items = forecastByDay[date];
-        const temps = items.map(i => i.main.temp);
-        const avgTemp = (temps.reduce((a, b) => a + b, 0) / temps.length).toFixed(1);
-        const condition = items[0].weather[0];
-        modalDetails.innerHTML += `
-          <div style="margin-bottom: 10px;">
-            <strong>${new Date(date).toLocaleDateString('sq-AL', { weekday: 'long', day: 'numeric', month: 'long' })}</strong> -
-            🌡️ ${avgTemp}°C - ${condition.description}
-            <img src="https://openweathermap.org/img/wn/${condition.icon}.png" />
-          </div>
-        `;
-      });
-
-      modal.classList.remove("hidden");
-    });
 }
 
 document.querySelector(".close").onclick = () => {
@@ -113,10 +77,6 @@ function loadWeatherData() {
           <button onclick='showDetails("${city.name}", ${JSON.stringify(forecastList.slice(dayIndex, dayIndex + 8))})'>
             Shfaq detajet
           </button>
-          <br/>
-          <button onclick='showSevenDayForecast("${city.name}", ${city.lat}, ${city.lon})'>
-            7 Ditët në Vijim
-          </button>
         `;
 
         L.marker([city.lat, city.lon])
@@ -128,7 +88,7 @@ function loadWeatherData() {
 
 loadWeatherData();
 window.showDetails = showDetails;
-window.showSevenDayForecast = showSevenDayForecast;
+
 
 
 
