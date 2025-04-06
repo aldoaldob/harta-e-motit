@@ -89,6 +89,11 @@ function loadWeatherData() {
 loadWeatherData();
 window.showDetails = showDetails;
 
+window.addEventListener('load', () => {
+  setTimeout(() => {
+    map.invalidateSize();
+  }, 500);
+});
 
 
 
