@@ -3,10 +3,10 @@ const cities = [
   { name: "Prishtina", lat: 42.6629, lon: 21.1655 },
   { name: "Shkodra", lat: 42.0683, lon: 19.5126 },
   { name: "Durrës", lat: 41.3231, lon: 19.4414 },
-  { name: "Gjirokastër", lat: 40.0758, lon: 20.1389 },
-  { name: "Elbasan", lat: 41.1125, lon: 20.0821 },
-  { name: "Vlorë", lat: 40.4667, lon: 19.4897 },
-  { name: "Berat", lat: 40.7058, lon: 19.9522 }
+  { name: "Vlora", lat: 40.4669, lon: 19.4897 },
+  { name: "Berat", lat: 40.7058, lon: 19.9522 },
+  { name: "Elbasan", lat: 41.1125, lon: 20.0828 },
+  { name: "Gjirokastër", lat: 40.0758, lon: 20.1381 }
 ];
 
 const apiKey = '00ae0431e834e8a6d4df723da2bca6e9';
@@ -44,23 +44,34 @@ function showDetails(cityName, forecastList) {
 }
 
 function showSevenDayForecast(cityName, lat, lon) {
-  fetch(`https://api.openweathermap.org/data/3.0/onecall?lat=${lat}&lon=${lon}&exclude=current,minutely,hourly,alerts&appid=${apiKey}&units=metric`)
+  fetch(`https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric`)
     .then(res => res.json())
     .then(data => {
-      const daily = data.daily;
       const modal = document.getElementById("weatherModal");
       const cityTitle = document.getElementById("modalCityName");
       const modalDetails = document.getElementById("modalDetails");
 
-      cityTitle.innerText = `Parashikimi për 7 ditët në ${cityName}`;
+      cityTitle.innerText = `7 Ditët në Vijim për ${cityName}`;
       modalDetails.innerHTML = "";
 
-      daily.slice(0, 7).forEach(day => {
-        const date = new Date(day.dt * 1000).toLocaleDateString();
+      const forecastByDay = {};
+
+      data.list.forEach(item => {
+        const date = item.dt_txt.split(" ")[0];
+        if (!forecastByDay[date]) forecastByDay[date] = [];
+        forecastByDay[date].push(item);
+      });
+
+      Object.keys(forecastByDay).slice(0, 7).forEach(date => {
+        const items = forecastByDay[date];
+        const temps = items.map(i => i.main.temp);
+        const avgTemp = (temps.reduce((a, b) => a + b, 0) / temps.length).toFixed(1);
+        const condition = items[0].weather[0];
         modalDetails.innerHTML += `
           <div style="margin-bottom: 10px;">
-            <strong>${date}</strong> - 🌡️ Max: ${day.temp.max}°C / Min: ${day.temp.min}°C - ${day.weather[0].description}
-            <img src="https://openweathermap.org/img/wn/${day.weather[0].icon}.png" />
+            <strong>${new Date(date).toLocaleDateString('sq-AL', { weekday: 'long', day: 'numeric', month: 'long' })}</strong> -
+            🌡️ ${avgTemp}°C - ${condition.description}
+            <img src="https://openweathermap.org/img/wn/${condition.icon}.png" />
           </div>
         `;
       });
@@ -96,9 +107,12 @@ function loadWeatherData() {
           <img src="${iconUrl}" alt="weather icon"><br/>
           🌡️ ${current.main.temp}°C, ${current.weather[0].description}<br/>
           <button onclick='showDetails("${city.name}", ${JSON.stringify(forecastList.slice(dayIndex, dayIndex + 8))})'>
-            Shfaq detajet</button><br/>
+            Shfaq detajet
+          </button>
+          <br/>
           <button onclick='showSevenDayForecast("${city.name}", ${city.lat}, ${city.lon})'>
-            7 Ditët në Vijim</button>
+            7 Ditët në Vijim
+          </button>
         `;
 
         L.marker([city.lat, city.lon])
@@ -108,7 +122,13 @@ function loadWeatherData() {
   });
 }
 
+// Inicializimi
 loadWeatherData();
+
+// FUNKSIONET QË DUHEN TË JENË GLOBALE për popup
+window.showDetails = showDetails;
+window.showSevenDayForecast = showSevenDayForecast;
+
 
 
 
