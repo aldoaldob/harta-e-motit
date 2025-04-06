@@ -43,6 +43,32 @@ function showDetails(cityName, forecastList) {
   modal.classList.remove("hidden");
 }
 
+function showSevenDayForecast(cityName, lat, lon) {
+  fetch(`https://api.openweathermap.org/data/3.0/onecall?lat=${lat}&lon=${lon}&exclude=current,minutely,hourly,alerts&appid=${apiKey}&units=metric`)
+    .then(res => res.json())
+    .then(data => {
+      const daily = data.daily;
+      const modal = document.getElementById("weatherModal");
+      const cityTitle = document.getElementById("modalCityName");
+      const modalDetails = document.getElementById("modalDetails");
+
+      cityTitle.innerText = `Parashikimi për 7 ditët në ${cityName}`;
+      modalDetails.innerHTML = "";
+
+      daily.slice(0, 7).forEach(day => {
+        const date = new Date(day.dt * 1000).toLocaleDateString();
+        modalDetails.innerHTML += `
+          <div style="margin-bottom: 10px;">
+            <strong>${date}</strong> - 🌡️ Max: ${day.temp.max}°C / Min: ${day.temp.min}°C - ${day.weather[0].description}
+            <img src="https://openweathermap.org/img/wn/${day.weather[0].icon}.png" />
+          </div>
+        `;
+      });
+
+      modal.classList.remove("hidden");
+    });
+}
+
 document.querySelector(".close").onclick = () => {
   document.getElementById("weatherModal").classList.add("hidden");
 };
@@ -70,8 +96,9 @@ function loadWeatherData() {
           <img src="${iconUrl}" alt="weather icon"><br/>
           🌡️ ${current.main.temp}°C, ${current.weather[0].description}<br/>
           <button onclick='showDetails("${city.name}", ${JSON.stringify(forecastList.slice(dayIndex, dayIndex + 8))})'>
-            Shfaq detajet
-          </button>
+            Shfaq detajet</button><br/>
+          <button onclick='showSevenDayForecast("${city.name}", ${city.lat}, ${city.lon})'>
+            7 Ditët në Vijim</button>
         `;
 
         L.marker([city.lat, city.lon])
@@ -82,6 +109,7 @@ function loadWeatherData() {
 }
 
 loadWeatherData();
+
 
 
 
