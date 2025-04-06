@@ -10,6 +10,7 @@
      crossorigin="anonymous"></script>
 
   <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
 </head>
 <body>
   <div class="header">
@@ -43,7 +44,19 @@
 
   <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
   <script src="script.js"></script>
+
+  <!-- FIX problemi i renderimit të hartës -->
+  <script>
+    window.addEventListener('load', () => {
+      setTimeout(() => {
+        if (window.map) {
+          window.map.invalidateSize();
+        }
+      }, 300);
+    });
+  </script>
 </body>
 </html>
+
 
 
