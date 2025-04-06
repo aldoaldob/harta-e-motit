@@ -27,17 +27,10 @@ h1 span {
   box-shadow: 0 0 20px rgba(0,0,0,0.4);
 }
 
-/* Shtohet për të zgjidhur problemin e hartës me tile që duken gabim */
 .leaflet-container {
   width: 100% !important;
   height: 100% !important;
   z-index: 0;
-  image-rendering: optimizeSpeed;
-  image-rendering: -webkit-optimize-contrast;
-  image-rendering: -moz-crisp-edges;
-  image-rendering: pixelated;
-  backface-visibility: hidden;
-  transform: translate3d(0, 0, 0);
 }
 
 .buttons {
@@ -83,8 +76,7 @@ button:hover {
   text-align: left;
 }
 
-.close,
-.close-weekly {
+.close {
   position: absolute;
   top: 15px;
   right: 20px;

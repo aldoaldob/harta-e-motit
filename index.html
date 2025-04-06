@@ -22,7 +22,7 @@
     </div>
   </div>
 
-  <div id="map" style="height: 600px; margin: auto; width: 90%; border-radius: 15px;"></div>
+  <div id="map"></div>
 
   <!-- Modal për oraret -->
   <div id="weatherModal" class="modal hidden">
@@ -33,28 +33,8 @@
     </div>
   </div>
 
-  <!-- Modal për 7 ditë -->
-  <div id="weeklyModal" class="modal hidden">
-    <div class="modal-content">
-      <span class="close-weekly">&times;</span>
-      <h2 id="weeklyCityName"></h2>
-      <div id="weeklyDetails"></div>
-    </div>
-  </div>
-
   <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
   <script src="script.js"></script>
-
-  <!-- FIX problemi i renderimit të hartës -->
-  <script>
-    window.addEventListener('load', () => {
-      setTimeout(() => {
-        if (window.map) {
-          window.map.invalidateSize();
-        }
-      }, 300);
-    });
-  </script>
 </body>
 </html>
 
