@@ -9,7 +9,9 @@ const cities = [
   { name: "Gjirokastër", lat: 40.0758, lon: 20.1381 }
 ];
 
-// Përdor tokenin nga token.js
+// ✅ Merr tokenin nga token.js në mënyrë të sigurt
+const apiKey = typeof OPENWEATHERMAP_API_KEY !== "undefined" ? OPENWEATHERMAP_API_KEY : '';
+
 let selectedDayIndex = 0;
 
 const map = L.map('map').setView([41.3275, 19.8189], 7);
@@ -59,7 +61,7 @@ function loadWeatherData() {
   });
 
   cities.forEach(city => {
-    fetch(`https://api.openweathermap.org/data/2.5/forecast?lat=${city.lat}&lon=${city.lon}&appid=${OPENWEATHERMAP_API_KEY}&units=metric`)
+    fetch(`https://api.openweathermap.org/data/2.5/forecast?lat=${city.lat}&lon=${city.lon}&appid=${apiKey}&units=metric`)
       .then(res => res.json())
       .then(data => {
         const forecastList = data.list;
@@ -87,6 +89,7 @@ function loadWeatherData() {
 
 loadWeatherData();
 window.showDetails = showDetails;
+
 window.addEventListener('load', () => {
   setTimeout(() => {
     map.invalidateSize();
