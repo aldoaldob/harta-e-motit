@@ -2,30 +2,44 @@
 <html lang="sq">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Test Leaflet</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Harta e Motit</title>
 
+  <!-- AdSense Verification Code -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4377592030699008"
+     crossorigin="anonymous"></script>
+
+  <!-- Leaflet CSS (duhet të jetë gjithmonë para çdo JavaScript) -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-  <style>
-    #map {
-      height: 600px;
-      width: 100%;
-    }
-  </style>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <h1>Harta Leaflet Test</h1>
+  <div class="header">
+    <h1>🌤️ Harta e Motit <span>(3 Ditët në Vijim)</span></h1>
+    <div class="buttons">
+      <button onclick="changeDay(0)">Sot</button>
+      <button onclick="changeDay(1)">Nesër</button>
+      <button onclick="changeDay(2)">Pasnesër</button>
+    </div>
+  </div>
+
   <div id="map"></div>
 
+  <!-- Modal për oraret -->
+  <div id="weatherModal" class="modal hidden">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h2 id="modalCityName"></h2>
+      <div id="modalDetails"></div>
+    </div>
+  </div>
+
+  <!-- Leaflet JS duhet të jetë përpara script.js -->
   <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-  <script>
-    const map = L.map('map').setView([41.3275, 19.8189], 7);
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '© OpenStreetMap contributors'
-    }).addTo(map);
-  </script>
+  <script src="script.js"></script>
 </body>
 </html>
+
 
 
 
