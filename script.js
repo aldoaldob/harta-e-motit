@@ -17,7 +17,6 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
   attribution: '© OpenStreetMap contributors'
 }).addTo(map);
 
-// Ndihmon për shfaqje korrekte
 setTimeout(() => {
   map.invalidateSize();
 }, 500);
@@ -128,8 +127,6 @@ function loadWeatherData() {
 }
 
 loadWeatherData();
-
-// Funksione globale
 window.showDetails = showDetails;
 window.showSevenDayForecast = showSevenDayForecast;
 
